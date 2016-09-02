@@ -7,25 +7,13 @@
 			console.log("INFO: UDC module loaded");
 		}
 
-		function sendEvent(timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, e){ // TODO: Remove e
+		function sendEvent(timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, e){
 			$.ajax({
-        url: "http://localhost:3000/events.json", // TODO: Change to 10.92.81.69/posts.json and to events.json eventually..
+        url: "http://localhost:3000/events.json",
         type: "POST",
         data: {
-          //event_type: e.type,
-          //target: e.target.id,
-          //count: "1",
-          //host: e.target.ownerDocument.referrer,
-          //widget: e.target.ownerDocument.title,
-          event:{event_type: e.type, target: e.target.id, count: "1", host: e.target.ownerDocument.referrer, widget: e.target.ownerDocument.title}
-					/* TODO: Change backend to support these new data types.
-					timestamp: timestamp,
-          target: target,
-          targetBaseURI: targetBaseURI,
-          targetValue: targetValue,
-          targetInnerText: targetInnerText,
-					targetId: targetId,
-          event:{
+          //event:{event_type: e.type, target: e.target.id, count: "1", host: e.target.ownerDocument.referrer, widget: e.target.ownerDocument.title}
+					event:{
 						timestamp: timestamp,
           	target: target,
           	targetBaseURI: targetBaseURI,
@@ -33,7 +21,6 @@
           	targetInnerText: targetInnerText,
 						targetId: targetId
 					}
-					*/
         },
         dataType: "json"
     	});

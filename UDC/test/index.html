@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <title>UDC test</title>
+        <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+        <link rel="stylesheet" href="vendor/jqx.base.css" type="text/css" />
+    </head>
+    <body>
+
+        <div>
+            <input class="analytics" type="button" value="Button" id='jqxButton' />
+        </div>
+        <div>
+            <input class="analytics" style='margin-top: 20px;' type="submit" value="Submit" id='jqxSubmitButton' />
+        </div>
+        <div>
+            <input class="analytics" style='margin-top: 20px;' type="button" id='jqxImageButton' />
+        </div>
+        <div>
+            <input class="analytics" style='margin-top: 20px;' value="Button" type="button" id='jqxTextImageButton' />
+        </div>
+        <div>
+            <input class="analytics" style='margin-top: 20px;' value="<span style='font-weight: bold;'>HTML Button</span>" type="button" id='jqxHTMLButton' />
+        </div>
+        <div>
+            <input class="analytics" style='margin-top: 20px;' type="Button" value="Disabled" id='jqxDisabledButton' />
+        </div>
+        <div style='font-size: 12px; font-family: Verdana; margin-top: 10px;'>
+            <div>Events:</div>
+            <div id='events'>
+            </div>
+        </div>
+
+        <div id="mocha"></div>
+
+        <script src="../node_modules/mocha/mocha.js"></script>
+        <script data-main="scripts/test-main-mocha" src="../node_modules/requirejs/require.js"></script>
+
+        <script>
+
+        </script>
+
+    </body>
+</html>

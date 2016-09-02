@@ -1,0 +1,36 @@
+{
+  "name": "pm",
+  "version": "1.0.0",
+  "description": "utility to collect user data",
+  "main": "app/scripts/udc.js",
+  "scripts": {
+    "test": "gulp jshint && gulp test"
+  },
+  "author": "ssuonsyrja",
+  "license": "",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-copy": "0.0.2",
+    "gulp-jshint": "^2.0.1",
+    "gulp-load-plugins": "^1.2.4",
+    "jquery": "^2.2.4",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.2.0",
+    "karma": "^0.13.22",
+    "karma-chai": "^0.1.0",
+    "karma-coverage": "^1.0.0",
+    "karma-jquery": "^0.1.0",
+    "karma-mocha": "^1.0.1",
+    "karma-phantomjs2-launcher": "^0.5.0",
+    "karma-requirejs": "^1.0.0",
+    "mocha": "^2.5.3",
+    "phantomjs-prebuilt": "^2.1.7",
+    "karma-sinon": "^1.0.0",
+    "sinon": "^1.17.4"
+  },
+  "dependencies": {
+	"requirejs": "^2.1.16"
+  }
+}

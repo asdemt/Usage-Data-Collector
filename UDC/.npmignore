@@ -1,0 +1,7 @@
+coverage
+locales
+test
+gulpfile.js
+require.config.js
+karma.conf.js
+.npmignore

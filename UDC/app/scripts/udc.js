@@ -14,8 +14,9 @@
         data: {
           //event:{event_type: e.type, target: e.target.id, count: "1", host: e.target.ownerDocument.referrer, widget: e.target.ownerDocument.title}
 					event:{
+						eventType: e.type,
 						timestamp: timestamp,
-          	target: target,
+          	//target: target,
           	targetBaseURI: targetBaseURI,
           	targetValue: targetValue,
           	targetInnerText: targetInnerText,
@@ -45,7 +46,7 @@
 				// Event timeStamp
 				console.log("ANALYTICS: Event timeStamp:");
 				console.log(event.timeStamp);
-				var timestamp = event.timestamp;
+				var timestamp = event.timeStamp;
 				//event_info << ["Event timeStamp",event.timeStamp];
 
 				// Check if the event's target (element) has any info.

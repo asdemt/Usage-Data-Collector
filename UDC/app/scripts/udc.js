@@ -45,8 +45,8 @@
 
 				// Event timeStamp
 				console.log("ANALYTICS: Event timeStamp:");
-				console.log(event.timeStamp);
-				var timestamp = event.timeStamp;
+				console.log(Math.round(new Date().getTime()/1000.0)); //console.log(event.timeStamp);
+				var timestamp = Math.round(new Date().getTime()/1000.0); // Now in seconds since epoch + timezone. TODO: Decide if ms is better
 				//event_info << ["Event timeStamp",event.timeStamp];
 
 				// Check if the event's target (element) has any info.

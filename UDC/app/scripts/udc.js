@@ -5,16 +5,24 @@
 
 		function UDC() {
 			console.log("INFO: UDC module loaded");
+			if (window.localStorage) {
+			  if(localStorage.getItem("LOCAL_STORAGE_SESSION_ID") === null){
+
+			  	localStorage.setItem("LOCAL_STORAGE_SESSION_ID", Math.random().toString(36).substr(2, 9));
+			  }
+				console.log("INFO: SessionId:" + localStorage.getItem("LOCAL_STORAGE_SESSION_ID"));
+			}
 		}
 
-		function sendEvent(timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, e){
+		function sendEvent(sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, e){
 			$.ajax({
-        url: "http://localhost:3000/events.json",
+        url: "http://10.92.81.69/events.json",
         type: "POST",
         data: {
           //event:{event_type: e.type, target: e.target.id, count: "1", host: e.target.ownerDocument.referrer, widget: e.target.ownerDocument.title}
 					event:{
 						eventType: e.type,
+						sessionId: sessionId,
 						timestamp: timestamp,
           	//target: target,
           	targetBaseURI: targetBaseURI,
@@ -113,7 +121,13 @@
 						var targetId = "";
 					}
 
-					sendEvent(timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, event); // TODO: Remove event
+					var sessionId = "";
+
+					if (window.localStorage) {
+						sessionId = localStorage.getItem("LOCAL_STORAGE_SESSION_ID");
+					}
+
+					sendEvent(sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, event); // TODO: Remove event
 				}
 
 				console.log("ANALYTICS:  EVENT END");

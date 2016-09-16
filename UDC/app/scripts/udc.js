@@ -1,10 +1,21 @@
 "use strict";
 
 (function(global){
-	define(['jquery'], function ($) {
+	(function (root, factory) {
+	    if (typeof define === 'function' && define.amd) {
+	    	define(['jquery'], factory);
+	    } else if (typeof exports === 'object') {
+	        module.exports = factory(require('jquery'));
+	    } else {
+	        // Browser globals (root is window)
+	        // root.returnExports = factory(root.jQuery, root._);
+	    }
+	} (this, function($) {
 
 		function UDC() {
 			console.log("INFO: UDC module loaded");
+
+			// Setting sessionIds
 			if (window.localStorage) {
 			  if(localStorage.getItem("LOCAL_STORAGE_SESSION_ID") === null){
 
@@ -12,6 +23,11 @@
 			  }
 				console.log("INFO: SessionId:" + localStorage.getItem("LOCAL_STORAGE_SESSION_ID"));
 			}
+
+			// Setting tab-separating sessions
+			// window.sessionStorage
+
+
 		}
 
 		function sendEvent(sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, e){
@@ -158,5 +174,5 @@
 		};
 
 		return UDC;
-	});
+	}));
 })(this);

@@ -30,17 +30,18 @@
 
 		}
 
-		function sendEvent(sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, e){
+		function sendEvent(dom_element, event_type, element_type, sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId){
 			$.ajax({
-        url: "http://10.92.81.69/events.json",
+        url: "http://localhost:3000/events.json",// "http://10.92.81.69/events.json",
         type: "POST",
         data: {
           //event:{event_type: e.type, target: e.target.id, count: "1", host: e.target.ownerDocument.referrer, widget: e.target.ownerDocument.title}
 					event:{
-						eventType: e.type,
+						targetSelector: element_type,
+						eventType: event_type,
 						sessionId: sessionId,
 						timestamp: timestamp,
-          	//target: target,
+          	target: dom_element,
           	targetBaseURI: targetBaseURI,
           	targetValue: targetValue,
           	targetInnerText: targetInnerText,
@@ -54,7 +55,6 @@
 		function instrument( dom_element, event_type, element_type){
 
 			// Add the namespace to the event type parameter(s)
-			// TODO: check if there is an array of event types
 			event_type = event_type + ".analytics";
 
 			//var event_info = {};
@@ -70,7 +70,7 @@
 				// Event timeStamp
 				console.log("ANALYTICS: Event timeStamp:");
 				console.log(Math.round(new Date().getTime()/1000.0)); //console.log(event.timeStamp);
-				var timestamp = Math.round(new Date().getTime()/1000.0); // Now in seconds since epoch + timezone. TODO: Decide if ms is better
+				var timestamp = Math.round(new Date().getTime()/1000.0); // Now in seconds since epoch + timezone.
 				//event_info << ["Event timeStamp",event.timeStamp];
 
 				// Check if the event's target (element) has any info.
@@ -143,7 +143,7 @@
 						sessionId = localStorage.getItem("LOCAL_STORAGE_SESSION_ID");
 					}
 
-					sendEvent(sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId, event); // TODO: Remove event
+					sendEvent(dom_element, event_type, element_type, sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId);
 				}
 
 				console.log("ANALYTICS:  EVENT END");

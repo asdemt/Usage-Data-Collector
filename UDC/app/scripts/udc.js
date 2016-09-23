@@ -88,10 +88,10 @@
 					var target = event.target;
 
 					// BaseURI should provide us with some valuable pieces of data.
-					if (event.target.BaseURI){
+					if (event.target.baseURI){
 						console.log("ANALYTICS: BaseURI:");
-						console.log(event.target.BaseURI);
-						var targetBaseURI = event.target.BaseURI;
+						console.log(event.target.baseURI);
+						var targetBaseURI = event.target.baseURI;
 					} else {
 						var targetBaseURI = "";
 					}

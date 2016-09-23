@@ -15,22 +15,29 @@
 		function UDC() {
 			console.log("INFO: UDC module loaded");
 
-			// Setting sessionIds
+			// Setting userIds
 			if (window.localStorage) {
-			  if(localStorage.getItem("LOCAL_STORAGE_SESSION_ID") === null){
+			  if(localStorage.getItem("LOCAL_STORAGE_USER_ID") === null){
 
-			  	localStorage.setItem("LOCAL_STORAGE_SESSION_ID", Math.random().toString(36).substr(2, 9));
+			  	localStorage.setItem("LOCAL_STORAGE_USER_ID", Math.random().toString(36).substr(2, 9));
 			  }
-				console.log("INFO: SessionId:" + localStorage.getItem("LOCAL_STORAGE_SESSION_ID"));
+				console.log("INFO: UserId:" + localStorage.getItem("LOCAL_STORAGE_USER_ID"));
 			}
 
 			// Setting tab-separating sessions
 			// window.sessionStorage
+			if (window.sessionStorage) {
+			  if(sessionStorage.getItem("SESSION_STORAGE_SESSION_ID") === null){
+
+			  	sessionStorage.setItem("SESSION_STORAGE_SESSION_ID", Math.random().toString(36).substr(2, 9));
+			  }
+				console.log("INFO: SessionId:" + sessionStorage.getItem("SESSION_STORAGE_SESSION_ID"));
+			}
 
 
 		}
 
-		function sendEvent(dom_element, event_type, element_type, sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId){
+		function sendEvent(dom_element, event_type, element_type, userId, sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId){
 			$.ajax({
         url: "http://localhost:3000/events.json",// "http://10.92.81.69/events.json",
         type: "POST",
@@ -39,6 +46,7 @@
 					event:{
 						targetSelector: element_type,
 						eventType: event_type,
+						userId: userId,
 						sessionId: sessionId,
 						timestamp: timestamp,
           	target: dom_element,
@@ -137,13 +145,18 @@
 						var targetId = "";
 					}
 
+					var userId = "";
 					var sessionId = "";
 
 					if (window.localStorage) {
-						sessionId = localStorage.getItem("LOCAL_STORAGE_SESSION_ID");
+						userId = localStorage.getItem("LOCAL_STORAGE_USER_ID");
 					}
 
-					sendEvent(dom_element, event_type, element_type, sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId);
+					if (window.localStorage) {
+						sessionId = sessionStorage.getItem("SESSION_STORAGE_SESSION_ID");
+					}
+
+					sendEvent(dom_element, event_type, element_type, userId, sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId);
 				}
 
 				console.log("ANALYTICS:  EVENT END");

@@ -13,7 +13,30 @@
 	} (this, function($) {
 
 		function UDC() {
-			console.log("INFO: UDC module loaded");
+
+			// Function for getting URL parameters
+	    function GetURLParameter(sParam){
+	      var sPageURL = window.location.search.substring(1);
+	      var sURLVariables = sPageURL.split('&');
+	      for (var i = 0; i < sURLVariables.length; i++)
+	      {
+	          var sParameterName = sURLVariables[i].split('=');
+	          if (sParameterName[0] == sParam)
+	          {
+	              return sParameterName[1];
+	          }
+	      }
+	    }
+
+	    // Get the analyticslog parameter from the URL's end==> "/?analyticslog=on"
+	    var analyticslog = GetURLParameter('analyticslog');
+			if (window.sessionStorage) {
+				sessionStorage.setItem("SESSION_STORAGE_ANALYTICS_LOG", analyticslog );
+			}
+
+			if(analyticslog === "on"){
+				console.log("INFO: UDC module loaded");
+			}
 
 			// Setting userIds
 			if (window.localStorage) {
@@ -21,7 +44,9 @@
 
 			  	localStorage.setItem("LOCAL_STORAGE_USER_ID", Math.random().toString(36).substr(2, 9));
 			  }
-				console.log("INFO: UserId:" + localStorage.getItem("LOCAL_STORAGE_USER_ID"));
+				if(analyticslog === "on"){
+					console.log("INFO: UserId:" + localStorage.getItem("LOCAL_STORAGE_USER_ID"));
+				}
 			}
 
 			// Setting tab-separating sessions
@@ -31,7 +56,9 @@
 
 			  	sessionStorage.setItem("SESSION_STORAGE_SESSION_ID", Math.random().toString(36).substr(2, 9));
 			  }
-				console.log("INFO: SessionId:" + sessionStorage.getItem("SESSION_STORAGE_SESSION_ID"));
+				if(analyticslog === "on"){
+					console.log("INFO: SessionId:" + sessionStorage.getItem("SESSION_STORAGE_SESSION_ID"));
+				}
 			}
 
 
@@ -65,32 +92,42 @@
 			// Add the namespace to the event type parameter(s)
 			event_type = event_type + ".analytics";
 
-			//var event_info = {};
+			var analyticslog = "off";
+
+			if (window.sessionStorage) {
+				if (sessionStorage.getItem("SESSION_STORAGE_ANALYTICS_LOG") ){
+					analyticslog = sessionStorage.getItem("SESSION_STORAGE_ANALYTICS_LOG");
+				}
+			}
 
 			$( dom_element ).on( event_type, element_type, function(event) {
-				console.log("ANALYTICS:  EVENT BEGIN");
+				if(analyticslog === "on"){
+					console.log("ANALYTICS:  EVENT BEGIN");
 
-				// Log the whole event
-				console.log("ANALYTICS: Event object:");
-				console.log(event);
-				//event_info << ["Event object", event];
+					// Log the whole event
+					console.log("ANALYTICS: Event object:");
+					console.log(event);
 
-				// Event timeStamp
-				console.log("ANALYTICS: Event timeStamp:");
-				console.log(Math.round(new Date().getTime()/1000.0)); //console.log(event.timeStamp);
+					// Event timeStamp
+					console.log("ANALYTICS: Event timeStamp:");
+					console.log(Math.round(new Date().getTime()/1000.0)); //console.log(event.timeStamp);
+				}
 				var timestamp = Math.round(new Date().getTime()/1000.0); // Now in seconds since epoch + timezone.
-				//event_info << ["Event timeStamp",event.timeStamp];
 
 				// Check if the event's target (element) has any info.
 				if (event.target){
-					console.log("ANALYTICS: Event.target object:");
-					console.log(event.target);
+					if(analyticslog === "on"){
+						console.log("ANALYTICS: Event.target object:");
+						console.log(event.target);
+					}
 					var target = event.target;
 
 					// BaseURI should provide us with some valuable pieces of data.
 					if (event.target.baseURI){
-						console.log("ANALYTICS: BaseURI:");
-						console.log(event.target.baseURI);
+						if(analyticslog === "on"){
+							console.log("ANALYTICS: BaseURI:");
+							console.log(event.target.baseURI);
+						}
 						var targetBaseURI = event.target.baseURI;
 					} else {
 						var targetBaseURI = "";
@@ -100,8 +137,10 @@
 					if (event.target.value !== null && event.target.value !== undefined &&
 						event.target.value !== "" ){
 
-						console.log("ANALYTICS: Event.target.value:");
-						console.log(event.target.value);
+						if(analyticslog === "on"){
+							console.log("ANALYTICS: Event.target.value:");
+							console.log(event.target.value);
+						}
 						var targetValue = event.target.value;
 					} else {
 						var targetValue = "";
@@ -112,8 +151,10 @@
 						event.target.innerText !== undefined &&
 						event.target.innerText !== "" ) {
 
-						console.log("ANALYTICS: Event.target.innerText:");
-						console.log(event.target.innerText);
+						if(analyticslog === "on"){
+							console.log("ANALYTICS: Event.target.innerText:");
+							console.log(event.target.innerText);
+						}
 
 						var targetInnerText = event.target.innerText;
 					} else {
@@ -137,8 +178,10 @@
 						event.target.id !== undefined &&
 						event.target.id !== "" ) {
 
-						console.log("ANALYTICS: Event.target.id:");
-						console.log(event.target.id);
+						if(analyticslog === "on"){
+							console.log("ANALYTICS: Event.target.id:");
+							console.log(event.target.id);
+						}
 
 						var targetId = event.target.id;
 					} else {
@@ -159,14 +202,14 @@
 					sendEvent(dom_element, event_type, element_type, userId, sessionId, timestamp, target, targetBaseURI, targetValue, targetInnerText, targetId);
 				}
 
-				console.log("ANALYTICS:  EVENT END");
-				//alert( event_info );
+				if(analyticslog === "on"){
+					console.log("ANALYTICS:  EVENT END");
+				}
 			});
 		}
 
 		UDC.prototype.startTracking = function( dom_element, event_type, element_type ) {
 
-			console.log("INFO: Setting analytics on");
 			$(document).ready(function () {
 				// Instrument parameters
 	  		// 1. dom_element can be "#id", ".class", or "type"
@@ -178,12 +221,7 @@
 
 		UDC.prototype.stopTracking = function() {
 			// Unbind all analytics related events
-			console.log("INFO: Setting analytics off");
   		$( "body" ).off( ".analytics");
-		};
-
-		UDC.prototype.test = function() {
-			console.log("DEBUG: Test function is logging");
 		};
 
 		return UDC;

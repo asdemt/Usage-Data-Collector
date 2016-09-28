@@ -146,8 +146,35 @@
 						var targetValue = "";
 					}
 
+					var targetInnerText = "";
+
+					if (event_type === "filter.analytics") {
+						var f = 0;
+						var filterQstr = "";
+						var filterinfo = $(dom_element).jqxGrid('getfilterinformation');
+						$.each(filterinfo, function( i, val){
+							filterQstr += "&filterdatafield"+f+"="+filterinfo[i].datafield;
+							filterQstr += "&"+filterinfo[i].datafield+"operator="+filterinfo[i].filter.operator;
+							$.each(filterinfo[i].filter.getfilters(), function(x){
+								filterQstr += "&filtervalue"+f+"="+filterinfo[i].filter.getfilters()[x].value;
+								filterQstr += "&filtercondition"+f+"="+filterinfo[i].filter.getfilters()[x].condition;
+								filterQstr += "&filteroperator"+f+"="+filterinfo[i].filter.getfilters()[x].operator;
+								//add up filters:
+								f += 1;
+							});
+						});
+						console.log("Filter event args:");
+						console.log(filterQstr);
+					}
+					else if (event_type === "columnreordered.analytics" ||
+									 event_type === "sort.analytics" ||
+									 event_type === "groupschanged.analytics" ||
+								 	 event_type === "resize.analytics") {
+						console.log("jqxGrid own event args:");
+						console.log(event.args);
+					}
 					// innerText can be e.g. a button text.
-					if (event.target.innerText !== null &&
+					else if (event.target.innerText !== null &&
 						event.target.innerText !== undefined &&
 						event.target.innerText !== "" ) {
 
@@ -157,8 +184,6 @@
 						}
 
 						var targetInnerText = event.target.innerText;
-					} else {
-						var targetInnerText = "";
 					}
 
 					/*
